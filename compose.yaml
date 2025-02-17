@@ -1,0 +1,24 @@
+services:
+  build:
+    build: .
+    entrypoint:
+      - /bin/bash
+      - build-web.sh
+    image: hypermedia-systems-book-builder
+    volumes:
+      - ./:/book
+    working_dir: /book
+
+  serve:
+    entrypoint:
+      - python
+      - -m
+      - http.server
+    environment:
+      PYTHONUNBUFFERED: 1
+    image: python:3.13-slim
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./:/book
+    working_dir: /book/_site
